@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Upgrade Plan | ClinicOS</title>
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/fluency-systems-filled/48/228BE6/hospital-2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { colors: { brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a', 950: '#172554' }, surface: '#f8fafc' }, fontFamily: { 'body': ['Manrope', 'sans-serif'] } }
+            }
+        }
+    </script>
+    <style>
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: scale(0.95) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        .glass-panel { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-surface font-body text-slate-800 min-h-screen flex items-center justify-center p-4 selection:bg-brand-500 selection:text-white relative" style="display: none;">
+    
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 -left-20 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="w-full max-w-6xl relative z-10 fade-in">
+        
+        <div class="text-center mb-10">
+            <div class="w-20 h-20 bg-amber-100 text-amber-500 rounded-[2rem] mx-auto flex items-center justify-center mb-6 shadow-inner border border-amber-200">
+                <span class="material-symbols-outlined text-[40px]">lock_clock</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">Subscription Expired</h1>
+            <p class="text-slate-500 font-bold text-lg max-w-2xl mx-auto">
+                Your 14-day free trial has ended. To continue managing your clinic with Clinic<span class="text-brand-500">OS</span>, please select a plan below.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-center max-w-5xl mx-auto">
+            
+            <div class="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm hover:shadow-xl transition-all relative">
+                <h3 class="text-brand-600 font-black text-sm uppercase tracking-widest mb-2">LITE TIER</h3>
+                <div class="flex items-baseline gap-1 mb-6">
+                    <span class="text-4xl font-black text-slate-900">₹999</span><span class="text-slate-400 font-bold">/month</span>
+                </div>
+                <p class="text-xs font-bold text-slate-500 mb-8 h-10">Perfect for single doctors starting their digital journey.</p>
+                <ul class="space-y-4 mb-8 text-sm font-bold text-slate-700">
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-500 text-[20px]">check_circle</span> Unlimited Patients</li>
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-500 text-[20px]">check_circle</span> Appointment Calendar</li>
+                    <li class="flex items-center gap-3 text-slate-400"><span class="material-symbols-outlined text-[20px]">cancel</span> No Clinical Notes</li>
+                    <li class="flex items-center gap-3 text-slate-400"><span class="material-symbols-outlined text-[20px]">cancel</span> No Billing & Inventory</li>
+                </ul>
+                <button onclick="requestUpgrade('LITE', 999)" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-black py-4 rounded-2xl transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">send</span> Choose Lite
+                </button>
+            </div>
+
+            <div class="bg-brand-600 rounded-[2.5rem] p-8 border-4 border-brand-100 shadow-2xl relative transform md:-translate-y-4">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-400 text-amber-900 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md">Most Popular</div>
+                <h3 class="text-brand-100 font-black text-sm uppercase tracking-widest mb-2 mt-2">PLUS TIER</h3>
+                <div class="flex items-baseline gap-1 mb-6">
+                    <span class="text-4xl font-black text-white">₹1499</span><span class="text-brand-200 font-bold">/month</span>
+                </div>
+                <p class="text-xs font-bold text-brand-100 mb-8 h-10">Ideal for growing clinics needing medical records.</p>
+                <ul class="space-y-4 mb-8 text-sm font-bold text-white">
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-brand-200 text-[20px]">check_circle</span> All Lite Features</li>
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-brand-200 text-[20px]">check_circle</span> E-Prescriptions</li>
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-brand-200 text-[20px]">check_circle</span> Lab Order Management</li>
+                    <li class="flex items-center gap-3 text-brand-300 opacity-70"><span class="material-symbols-outlined text-[20px]">cancel</span> No Billing & Inventory</li>
+                </ul>
+                <button onclick="requestUpgrade('PLUS', 1499)" class="w-full bg-white hover:bg-brand-50 text-brand-600 font-black py-4 rounded-2xl transition-colors shadow-lg shadow-black/10 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">rocket_launch</span> Choose Plus
+                </button>
+            </div>
+
+            <div class="bg-slate-900 rounded-[2.5rem] p-8 border border-slate-800 shadow-xl relative text-white">
+                <h3 class="text-brand-400 font-black text-sm uppercase tracking-widest mb-2">PRO TIER</h3>
+                <div class="flex items-baseline gap-1 mb-6">
+                    <span class="text-4xl font-black text-white">₹1999</span><span class="text-slate-400 font-bold">/month</span>
+                </div>
+                <p class="text-xs font-bold text-slate-400 mb-8 h-10">Complete Clinic Management System for absolute control.</p>
+                <ul class="space-y-4 mb-8 text-sm font-bold text-slate-300">
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-brand-400 text-[20px]">check_circle</span> All Plus Features</li>
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-brand-400 text-[20px]">check_circle</span> Advanced Billing & GST</li>
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-brand-400 text-[20px]">check_circle</span> Pharmacy & Inventory</li>
+                    <li class="flex items-center gap-3"><span class="material-symbols-outlined text-brand-400 text-[20px]">check_circle</span> Revenue Analytics</li>
+                </ul>
+                <button onclick="requestUpgrade('PRO', 1999)" class="w-full bg-brand-500 hover:bg-brand-400 text-white font-black py-4 rounded-2xl transition-colors flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">diamond</span> Choose Pro
+                </button>
+            </div>
+
+        </div>
+
+        <div class="mt-12 text-center flex flex-col items-center gap-4">
+            <p class="text-xs font-bold text-slate-400">Payments are processed securely manually via UPI/Bank Transfer. Activation within 15 mins.</p>
+            <button id="logoutBtn" class="text-sm font-bold text-red-500 hover:text-red-600 flex items-center gap-2 bg-white px-5 py-2.5 rounded-full shadow-sm border border-slate-200 transition-all hover:bg-red-50">
+                <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out to Main Screen
+            </button>
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBk6vekMZZNQnwyT2IbgIypv4dKN2NFpA",
+            authDomain: "clinic-os-d280b.firebaseapp.com",
+            projectId: "clinic-os-d280b",
+            storageBucket: "clinic-os-d280b.firebasestorage.app",
+            messagingSenderId: "149668024566",
+            appId: "1:149668024566:web:bb425ca2c455a80d69dcd7"
+        };
+        firebase.initializeApp(firebaseConfig); 
+        const auth = firebase.auth(); 
+        const db = firebase.firestore();
+
+        let currentTenantId = localStorage.getItem('tenantId');
+        let clinicName = "Unknown Clinic";
+
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                document.body.style.display = "flex";
+                if(currentTenantId) {
+                    try {
+                        const doc = await db.collection("branches").doc(currentTenantId).get();
+                        if(doc.exists) clinicName = doc.data().name || currentTenantId;
+                    } catch(e) { console.error(e); }
+                }
+            }
+        });
+
+        // 🚀 THE SAAS WHATSAPP HACK LOGIC 
+        window.requestUpgrade = (planName, price) => {
+            // *** MASTER: INGA UNGA PHONE NUMBER-AI MAATHUNGA (e.g. 919876543210) ***
+            const YOUR_WHATSAPP_NUMBER = "910000000000"; 
+            
+            const message = `Hello ClinicOS Team! 👋\n\nMy 14-day trial has expired. I would like to upgrade my clinic to the *${planName} PLAN* (₹${price}/mo).\n\n*Clinic Details:*\nName: ${clinicName}\nClinic ID: ${currentTenantId}\n\nPlease share the UPI details for activation.`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${YOUR_WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            
+            // Redirect user to WhatsApp
+            window.open(whatsappUrl, '_blank');
+        };
+
+        // Logout Logic so they aren't trapped
+        document.getElementById('logoutBtn').onclick = () => {
+            localStorage.removeItem('tenantId');
+            localStorage.removeItem('clinicPlan');
+            auth.signOut().then(() => {
+                window.location.href = "login.html"; 
+            });
+        };
+    </script>
+</body>
+</html>

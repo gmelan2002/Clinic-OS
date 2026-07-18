@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>HQ Console | ClinicOS Super Admin</title>
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/fluency-systems-filled/48/228BE6/hospital-2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brand: { 500: '#3b82f6', 600: '#2563eb' }, surface: '#f4f4f5' }, fontFamily: { 'body': ['Manrope', 'sans-serif'], 'mono': ['ui-monospace', 'SFMono-Regular', 'monospace'] } } }
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        select { -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+    </style>
+</head>
+<body class="bg-surface font-body text-slate-800 flex h-screen w-screen overflow-hidden selection:bg-brand-500 selection:text-white" style="display: none;">
+
+    <aside class="w-[280px] min-w-[280px] bg-[#0f172a] text-white flex flex-col hidden lg:flex shrink-0 shadow-2xl relative z-30 transition-all duration-300">
+        <div class="h-20 flex items-center gap-4 px-8 border-b border-white/10 shrink-0 bg-[#020617]">
+            <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span class="material-symbols-outlined text-white text-[22px]">health_and_safety</span>
+            </div>
+            <div class="flex flex-col justify-center">
+                <h1 class="text-2xl font-black tracking-tight leading-none text-white">Clinic<span class="text-amber-500">OS</span></h1>
+                <p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-[0.15em] mt-1">Super User Portal</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 py-8 px-5 space-y-2 overflow-y-auto no-scrollbar" id="sidebarNav">
+            <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-[0.15em] mb-4 px-3">Global Management</p>
+            <a onclick="switchTab('clinics')" id="nav-clinics" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold transition-all cursor-pointer mb-2 bg-white/10 text-white border border-white/10 shadow-lg">
+                <span class="material-symbols-outlined text-amber-400 text-[20px]">domain</span> <span class="text-sm">Network Clinics</span>
+            </a>
+            <a onclick="switchTab('revenue')" id="nav-revenue" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold transition-all cursor-pointer mb-2 text-slate-400 hover:bg-white/5 hover:text-white border border-transparent">
+                <span class="material-symbols-outlined text-[20px]">account_balance</span> <span class="text-sm">SaaS Revenue</span>
+            </a>
+            <a onclick="switchTab('doctors')" id="nav-doctors" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold transition-all cursor-pointer mb-2 text-slate-400 hover:bg-white/5 hover:text-white border border-transparent">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span> <span class="text-sm">Doctor Accounts</span>
+            </a>
+
+            <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-[0.15em] mt-8 mb-4 px-3">System logs</p>
+            <a onclick="switchTab('logs')" id="nav-logs" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold transition-all cursor-pointer mb-2 text-slate-400 hover:bg-white/5 hover:text-white border border-transparent">
+                <span class="material-symbols-outlined text-[20px]">bug_report</span> <span class="text-sm">Error Logs</span>
+            </a>
+            <a onclick="switchTab('security')" id="nav-security" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold transition-all cursor-pointer mb-2 text-slate-400 hover:bg-white/5 hover:text-white border border-transparent">
+                <span class="material-symbols-outlined text-[20px]">security</span> <span class="text-sm">Security Rules</span>
+            </a>
+        </nav>
+
+        <div class="p-5 border-t border-white/10 shrink-0 bg-[#020617]">
+            <button id="logoutBtn" class="flex items-center gap-3.5 px-4 py-3.5 text-red-400 hover:bg-red-500/10 w-full rounded-2xl font-bold transition-colors">
+                <span class="material-symbols-outlined text-[20px]">logout</span> <span class="text-sm">Secure Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-surface">
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 sticky top-0 z-20 shadow-sm shrink-0">
+            <div><h2 class="text-xl font-black text-slate-800 tracking-tight" id="headerTitle">Network Manager</h2></div>
+            <div class="flex items-center gap-4">
+                <button id="headerActionBtn" onclick="document.getElementById('addClinicModal').classList.remove('hidden')" class="bg-slate-900 hover:bg-black text-white px-5 py-2.5 rounded-full font-extrabold text-sm flex items-center gap-2 shadow-lg transition-all hover:-translate-y-0.5">
+                    <span class="material-symbols-outlined text-[18px] text-amber-400">add_business</span> Create Workspace
+                </button>
+                <div class="w-10 h-10 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center font-black border-2 border-slate-200 shadow-sm hidden sm:flex">HQ</div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 md:p-10 fade-in relative">
+            
+            <!-- CLINICS TAB -->
+            <div id="tab-clinics" class="tab-pane block">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                        <div class="flex justify-between items-start mb-4"><div class="w-12 h-12 rounded-[1rem] bg-blue-50 text-blue-600 flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">domain</span></div></div>
+                        <p class="text-slate-400 text-[11px] font-extrabold uppercase tracking-widest mb-1">Total Active Clinics</p>
+                        <h2 class="text-4xl font-black text-slate-800" id="totalClinicsCount">0</h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                        <div class="flex justify-between items-start mb-4"><div class="w-12 h-12 rounded-[1rem] bg-emerald-50 text-emerald-600 flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">payments</span></div></div>
+                        <p class="text-slate-400 text-[11px] font-extrabold uppercase tracking-widest mb-1">Monthly Recurring Rev</p>
+                        <h2 class="text-4xl font-black text-emerald-600">₹0 <span class="text-sm font-bold text-slate-400">/mo</span></h2>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                        <div class="flex justify-between items-start mb-4"><div class="w-12 h-12 rounded-[1rem] bg-purple-50 text-purple-600 flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">groups</span></div></div>
+                        <p class="text-slate-400 text-[11px] font-extrabold uppercase tracking-widest mb-1">Total Network Patients</p>
+                        <h2 class="text-4xl font-black text-slate-800">0</h2>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/80">
+                        <h3 class="font-black text-lg text-slate-800">Deployed Workspaces</h3>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-2 text-slate-400 text-[18px]">search</span>
+                            <input type="text" placeholder="Search clinics..." class="pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:border-slate-400 font-bold text-sm">
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-slate-50 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                                <tr>
+                                    <th class="p-5">Workspace Name & ID</th>
+                                    <th class="p-5">Admin Contact</th>
+                                    <th class="p-5">Plan Tier</th>
+                                    <th class="p-5 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clinicsTableBody" class="divide-y divide-slate-50">
+                                <tr><td colspan="4" class="p-10 text-center font-bold text-slate-400">Fetching Network Data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REVENUE TAB (Clean Slate) -->
+            <div id="tab-revenue" class="tab-pane hidden fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-xl relative overflow-hidden lg:col-span-2">
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Total SaaS Revenue (YTD)</h3>
+                        <h1 class="text-6xl font-black tracking-tight relative z-10">₹0</h1>
+                        <div class="mt-8 flex gap-4 relative z-10">
+                            <div class="bg-white/10 px-5 py-3 rounded-xl border border-white/5"><p class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">This Month</p><p class="font-black text-xl">₹0</p></div>
+                            <div class="bg-white/10 px-5 py-3 rounded-xl border border-emerald-500/30"><p class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">MRR Active</p><p class="font-black text-xl text-emerald-400">₹0</p></div>
+                        </div>
+                        <span class="material-symbols-outlined absolute -right-10 -bottom-10 text-[180px] text-white/5 pointer-events-none">account_balance</span>
+                    </div>
+                    <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-200">
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6">Plan Distribution</h3>
+                        <div class="space-y-5">
+                            <div><div class="flex justify-between text-xs font-bold mb-2"><span>Pro Plan (₹2999/mo)</span><span>0%</span></div><div class="w-full bg-slate-100 rounded-full h-3"><div class="bg-gradient-to-r from-amber-400 to-orange-500 h-3 rounded-full" style="width: 0%"></div></div></div>
+                            <div><div class="flex justify-between text-xs font-bold mb-2"><span>Plus Plan (₹1999/mo)</span><span>0%</span></div><div class="w-full bg-slate-100 rounded-full h-3"><div class="bg-brand-500 h-3 rounded-full" style="width: 0%"></div></div></div>
+                            <div><div class="flex justify-between text-xs font-bold mb-2"><span>Lite Plan (₹999/mo)</span><span>0%</span></div><div class="w-full bg-slate-100 rounded-full h-3"><div class="bg-slate-400 h-3 rounded-full" style="width: 0%"></div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOCTORS TAB (Clean Slate) -->
+            <div id="tab-doctors" class="tab-pane hidden fade-in">
+                <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/80">
+                        <h3 class="font-black text-lg text-slate-800">Global Doctor Directory</h3>
+                    </div>
+                    <div class="p-16 text-center flex flex-col items-center justify-center">
+                        <span class="material-symbols-outlined text-5xl text-slate-200 mb-3">person_off</span>
+                        <p class="font-bold text-slate-400">No active doctors found in the network.</p>
+                        <p class="text-xs font-bold text-slate-300 mt-1">Deploy a new workspace to onboard doctors.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOGS TAB (Clean Slate) -->
+            <div id="tab-logs" class="tab-pane hidden fade-in">
+                <div class="bg-[#0f172a] rounded-[2rem] shadow-xl overflow-hidden font-mono text-sm border border-slate-800">
+                    <div class="px-6 py-4 border-b border-white/10 flex items-center gap-2 bg-[#020617]">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-amber-500"></div><div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <span class="ml-4 text-xs font-bold text-slate-500">clinicos-server-logs ~ bash</span>
+                    </div>
+                    <div class="p-6 text-slate-300 space-y-3 h-[400px] overflow-y-auto leading-relaxed">
+                        <p><span class="text-emerald-400 font-bold">[SYSTEM]</span> Initializing logging service...</p>
+                        <p><span class="text-slate-500 font-bold">[INFO]</span> Connected to Firebase. Waiting for incoming network events...</p>
+                        <p class="animate-pulse font-black text-amber-500">_</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECURITY TAB (Kept factual status) -->
+            <div id="tab-security" class="tab-pane hidden fade-in">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm flex items-start gap-5">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-3xl">verified_user</span>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-slate-800 text-lg">Double Admin Active</h3>
+                            <p class="text-xs font-bold text-slate-500 mt-2 leading-relaxed">Firestore 'users' collection is actively enforcing <span class="bg-slate-100 text-slate-700 px-1 py-0.5 rounded">super_admin</span> roles for system access.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm flex items-start gap-5">
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-3xl">gpp_maybe</span>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-slate-800 text-lg">Strict Registration</h3>
+                            <p class="text-xs font-bold text-slate-500 mt-2 leading-relaxed">Open signups are disabled via Firebase Rules. Only HQ can deploy new clinics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="addClinicModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity">
+        <div class="bg-white rounded-[2rem] p-8 w-full max-w-2xl shadow-2xl relative">
+            <button type="button" onclick="document.getElementById('addClinicModal').classList.add('hidden')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition-colors"><span class="material-symbols-outlined">close</span></button>
+            <div class="flex items-center gap-3 mb-2">
+                <span class="material-symbols-outlined text-amber-500 text-3xl">add_business</span>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Deploy New Clinic & Account</h2>
+            </div>
+            <p class="text-xs font-bold text-slate-500 mb-8">Setup a new workspace, plan, and generate Admin Login Credentials.</p>
+            
+            <form id="addClinicForm" class="space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Clinic Name</label>
+                        <input type="text" id="cName" placeholder="e.g. Harur Eye Care" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-slate-800 transition-all" required>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-2">Workspace Code <span class="material-symbols-outlined text-[14px] text-brand-500" title="Tenant Code">info</span></label>
+                        <input type="text" id="cId" placeholder="e.g. harur-eye" pattern="[a-z0-9-]+" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-brand-600 transition-all" required>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-blue-50/50 border border-blue-100 rounded-xl space-y-4">
+                    <h4 class="text-[11px] font-black text-brand-600 uppercase tracking-widest flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">vpn_key</span> Generate Clinic Admin Credentials</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <input type="email" id="cAdminEmail" placeholder="admin@harureye.com" class="w-full px-4 py-3.5 bg-white border border-blue-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-800 transition-all" required>
+                        </div>
+                        <div>
+                            <input type="text" id="cAdminPassword" placeholder="Auto-gen or type password" class="w-full px-4 py-3.5 bg-white border border-blue-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-mono font-bold text-slate-800 transition-all" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-5">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Specialty</label>
+                        <select id="cSpecialty" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-slate-800 cursor-pointer" required>
+                            <option value="general">General</option><option value="dental">Dental</option><option value="eye">Eye Care</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-brand-500 uppercase tracking-widest mb-1.5 block">SaaS Plan Tier</label>
+                        <select id="cPlan" class="w-full px-4 py-3.5 bg-brand-50 border border-brand-200 text-brand-700 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold cursor-pointer" required>
+                            <option value="lite">Lite (Patients, Appts)</option>
+                            <option value="plus">Plus (+ Treatments, Labs)</option>
+                            <option value="pro">Pro (+ Billing, Full Access)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-100">
+                    <button type="submit" id="btnSaveClinic" class="w-full bg-slate-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-black transition-all flex justify-center items-center gap-2">
+                        <span class="material-symbols-outlined text-amber-400 text-[20px]">rocket_launch</span> Initialize Workspace & Create User
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="upgradeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity">
+        <div class="bg-white rounded-[2rem] p-8 w-full max-w-sm shadow-2xl relative">
+            <button type="button" onclick="document.getElementById('upgradeModal').classList.add('hidden')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition-colors"><span class="material-symbols-outlined">close</span></button>
+            <div class="flex flex-col items-center text-center mb-6">
+                <div class="w-14 h-14 bg-brand-50 rounded-full flex items-center justify-center mb-4"><span class="material-symbols-outlined text-brand-500 text-3xl">upgrade</span></div>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Upgrade Plan</h2>
+                <p class="text-xs font-bold text-slate-500 mt-2" id="upgradeClinicName">Modifying plan for: Clinic</p>
+            </div>
+            <form id="upgradeForm" class="space-y-4">
+                <input type="hidden" id="upgradeTenantId">
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Select New Tier</label>
+                    <select id="upgradePlanSelect" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-slate-800 cursor-pointer">
+                        <option value="lite">Lite Plan</option>
+                        <option value="plus">Plus Plan</option>
+                        <option value="pro">Pro Plan</option>
+                    </select>
+                </div>
+                <button type="submit" id="btnUpgrade" class="w-full bg-brand-600 text-white font-black py-3.5 rounded-xl shadow-lg hover:bg-brand-700 transition-all flex justify-center items-center gap-2">Update Access</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyBBk6vekMZZNQnwyT2IbgIypv4dKN2NFpA", authDomain: "clinic-os-d280b.firebaseapp.com", projectId: "clinic-os-d280b" };
+        firebase.initializeApp(firebaseConfig); 
+        const auth = firebase.auth(); const db = firebase.firestore();
+        
+        // HACK: Initialize a secondary app to create user without logging out SuperAdmin
+        const secondaryApp = firebase.initializeApp(firebaseConfig, "SecondaryApp");
+
+        // UI Tabs Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => { el.classList.remove('block'); el.classList.add('hidden'); });
+            document.querySelectorAll('.sidebar-item').forEach(el => {
+                el.className = 'sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold transition-all cursor-pointer mb-2 text-slate-400 hover:bg-white/5 hover:text-white border border-transparent';
+                let icon = el.querySelector('.material-symbols-outlined'); if(icon) icon.classList.remove('text-amber-400');
+            });
+            document.getElementById('tab-' + tabId).classList.remove('hidden'); document.getElementById('tab-' + tabId).classList.add('block');
+            const activeNav = document.getElementById('nav-' + tabId);
+            activeNav.className = 'sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold transition-all cursor-pointer mb-2 bg-white/10 text-white border border-white/10 shadow-lg';
+            let activeIcon = activeNav.querySelector('.material-symbols-outlined'); if(activeIcon) activeIcon.classList.add('text-amber-400');
+            const headers = { 'clinics': 'Network Manager', 'revenue': 'SaaS Financials', 'doctors': 'Global Accounts', 'logs': 'System Activity', 'security': 'Architecture Security' };
+            document.getElementById('headerTitle').innerText = headers[tabId];
+            if(tabId !== 'clinics') document.getElementById('headerActionBtn').classList.add('hidden'); else document.getElementById('headerActionBtn').classList.remove('hidden');
+        }
+
+        // Security Check for Super Admin
+        auth.onAuthStateChanged(async (user) => { 
+            if (!user) { 
+                window.location.href = "hq_login.html"; 
+            } else { 
+                try {
+                    const userDoc = await db.collection("users").doc(user.uid).get();
+                    if (userDoc.exists && userDoc.data().role === 'super_admin') {
+                        document.body.style.display = "flex"; 
+                        fetchAllClinics(); 
+                    } else {
+                        alert("Unauthorized Access! Only Super Admins are permitted.");
+                        await auth.signOut();
+                        window.location.href = "hq_login.html";
+                    }
+                } catch(error) {
+                    console.error("Error verifying admin role:", error);
+                    window.location.href = "hq_login.html";
+                }
+            }
+        });
+
+        function fetchAllClinics() {
+            db.collection("branches").orderBy("timestamp", "desc").onSnapshot(snap => {
+                const tbody = document.getElementById('clinicsTableBody'); tbody.innerHTML = '';
+                document.getElementById('totalClinicsCount').innerText = snap.size;
+                if(snap.empty) { tbody.innerHTML = `<tr><td colspan="4" class="p-10 text-center font-bold text-slate-400">No clinics deployed yet.</td></tr>`; return; }
+
+                snap.forEach(doc => {
+                    const data = doc.data(); const plan = data.plan || 'lite';
+                    let planBadge = '';
+                    if(plan === 'lite') planBadge = '<span class="bg-slate-100 text-slate-600 px-2 py-1 rounded text-[9px] font-black uppercase tracking-wider">Lite Plan</span>';
+                    else if(plan === 'plus') planBadge = '<span class="bg-brand-50 text-brand-600 border border-brand-200 px-2 py-1 rounded text-[9px] font-black uppercase tracking-wider">Plus Plan</span>';
+                    else if(plan === 'pro') planBadge = '<span class="bg-gradient-to-r from-amber-400 to-orange-500 text-white px-2 py-1 rounded text-[9px] font-black uppercase tracking-wider shadow-sm">Pro Plan</span>';
+
+                    tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors group border-b border-slate-50">
+                        <td class="p-5">
+                            <h4 class="font-extrabold text-slate-800 text-sm">${data.name}</h4>
+                            <p class="font-mono text-[10px] text-slate-400 font-bold mt-0.5">ID: ${doc.id}</p>
+                        </td>
+                        <td class="p-5">
+                            <span class="text-xs font-bold text-slate-600 block">${data.adminEmail || 'No Email Set'}</span>
+                            <span class="text-[9px] font-bold text-slate-400 uppercase mt-0.5 block">${data.specialty} Theme</span>
+                        </td>
+                        <td class="p-5">${planBadge}</td>
+                        <td class="p-5 text-right flex justify-end gap-2">
+    <button onclick="openUpgradeModal('${doc.id}', '${data.name}', '${plan}')" class="bg-slate-100 hover:bg-brand-50 hover:text-brand-600 text-slate-500 px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all flex items-center gap-1">
+        <span class="material-symbols-outlined text-[14px]">upgrade</span> Plan
+    </button>
+    <button onclick="window.location.href='clinic_details.html?id=${doc.id}'" class="bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-[10px] font-extrabold uppercase tracking-wider transition-all flex items-center gap-1 shadow-md hover:-translate-y-0.5">
+        <span class="material-symbols-outlined text-[14px]">visibility</span> Manage
+    </button>
+</td>
+                    </tr>`;
+                });
+            });
+        }
+
+        // --- DEPLOY CLINIC & CREATE USER ---
+        document.getElementById('addClinicForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSaveClinic'); const originalText = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin text-[20px]">sync</span> Initializing...`; btn.disabled = true;
+
+            const id = document.getElementById('cId').value.toLowerCase().trim();
+            const adminEmail = document.getElementById('cAdminEmail').value.trim();
+            const adminPwd = document.getElementById('cAdminPassword').value;
+
+            try {
+                // 1. Check if Workspace exists
+                const docRef = await db.collection("branches").doc(id).get();
+                if(docRef.exists) { alert(`Workspace ID '${id}' is already taken!`); btn.innerHTML = originalText; btn.disabled = false; return; }
+
+                // 2. Create Auth User using Secondary App (Prevents Logout of HQ Admin)
+                await secondaryApp.auth().createUserWithEmailAndPassword(adminEmail, adminPwd);
+                await secondaryApp.auth().signOut(); // Clean it up
+
+                // 3. Save Workspace Config
+                await db.collection("branches").doc(id).set({
+                    name: document.getElementById('cName').value,
+                    specialty: document.getElementById('cSpecialty').value,
+                    plan: document.getElementById('cPlan').value,
+                    adminEmail: adminEmail,
+                    status: 'Active',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById('addClinicForm').reset(); document.getElementById('addClinicModal').classList.add('hidden');
+                alert(`SUCCESS!\n\nWorkspace: ${id}\nUser: ${adminEmail}\n\nThe clinic is ready for login.`);
+
+            } catch (error) { 
+                console.error(error); 
+                alert("Failed: " + error.message); 
+            } 
+            finally { btn.innerHTML = originalText; btn.disabled = false; }
+        };
+
+        // Upgrade Logic
+        window.openUpgradeModal = (tenantId, clinicName, currentPlan) => {
+            document.getElementById('upgradeTenantId').value = tenantId;
+            document.getElementById('upgradeClinicName').innerText = `Modifying plan for: ${clinicName}`;
+            document.getElementById('upgradePlanSelect').value = currentPlan;
+            document.getElementById('upgradeModal').classList.remove('hidden');
+        };
+
+        document.getElementById('upgradeForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const tenantId = document.getElementById('upgradeTenantId').value;
+            try {
+                await db.collection("branches").doc(tenantId).update({ plan: document.getElementById('upgradePlanSelect').value });
+                document.getElementById('upgradeModal').classList.add('hidden');
+            } catch (error) { console.error(error); }
+        };
+
+        document.getElementById('logoutBtn').onclick = () => { auth.signOut().then(() => { window.location.href = "hq_login.html"; }); };
+    </script>
+</body>
+</html>

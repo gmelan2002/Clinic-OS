@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Workspace Control | ClinicOS HQ</title>
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/fluency-systems-filled/48/228BE6/hospital-2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { brand: { 500: '#3b82f6', 600: '#2563eb' }, surface: '#f4f4f5' }, fontFamily: { 'body': ['Manrope', 'sans-serif'], 'mono': ['ui-monospace', 'SFMono-Regular', 'monospace'] } } }
+        }
+    </script>
+    <style>
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        .toggle-checkbox:checked { right: 0; border-color: #ef4444; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #ef4444; }
+    </style>
+</head>
+<body class="bg-surface font-body text-slate-800 flex h-screen w-screen overflow-hidden selection:bg-brand-500 selection:text-white" style="display: none;">
+
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-surface">
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 sticky top-0 z-20 shadow-sm shrink-0">
+            <div class="flex items-center gap-4">
+                <button onclick="window.location.href='superadmin_hq.html'" class="w-10 h-10 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <div>
+                    <h2 class="text-xl font-black text-slate-800 tracking-tight" id="headerClinicName">Loading...</h2>
+                    <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest font-mono" id="headerClinicId">ID: fetching...</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="statusBadge" class="bg-emerald-100 text-emerald-600 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-sm">
+                    <span class="material-symbols-outlined text-[14px]">check_circle</span> ACTIVE
+                </span>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 md:p-10 fade-in">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="material-symbols-outlined text-brand-500 text-3xl">corporate_fare</span>
+                            <h3 class="font-black text-xl text-slate-800">Workspace Details</h3>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Clinic / Branch Name</p>
+                                    <p class="font-bold text-slate-800 text-lg" id="detName">-</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Contact Number</p>
+                                    <p class="font-bold text-slate-800" id="detPhone">Not provided</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Physical Address</p>
+                                    <p class="font-bold text-slate-600 text-sm" id="detAddress">Not provided</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Owner / Admin Email</p>
+                                    <p class="font-bold text-slate-800" id="detEmail">-</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Owner Name</p>
+                                    <p class="font-bold text-slate-800" id="detOwner">Not provided</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Specialty</p>
+                                    <p class="font-bold text-slate-600 text-sm uppercase" id="detSpecialty">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="openEditModal()" class="mt-6 text-brand-600 text-sm font-bold flex items-center gap-1 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 px-4 py-2 rounded-xl transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">edit</span> Edit Details
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="material-symbols-outlined text-amber-500 text-3xl">add_photo_alternate</span>
+                            <h3 class="font-black text-xl text-slate-800">Clinic Media</h3>
+                        </div>
+                        <p class="text-xs font-bold text-slate-500 mb-4">Upload clinic interior/exterior photos for HQ verification (Optional).</p>
+                        
+                        <div class="border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center hover:bg-slate-50 transition-colors cursor-pointer flex flex-col items-center justify-center">
+                            <span class="material-symbols-outlined text-4xl text-slate-400 mb-2">cloud_upload</span>
+                            <p class="font-bold text-slate-600">Click to upload photos</p>
+                            <p class="text-[10px] font-bold text-slate-400 mt-1">PNG, JPG up to 5MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    
+                    <div class="bg-slate-900 text-white rounded-[2rem] shadow-xl p-8 relative overflow-hidden">
+                        <div class="flex items-center gap-2 mb-6 relative z-10">
+                            <span class="material-symbols-outlined text-amber-400">workspace_premium</span>
+                            <h3 class="font-black text-lg">SaaS Package</h3>
+                        </div>
+                        <div class="relative z-10 space-y-5">
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Current Plan</p>
+                                <p class="font-black text-2xl text-amber-400 uppercase" id="detPlan">-</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Billing Cycle Date</p>
+                                <p class="font-bold text-white text-sm" id="detBillingDate">Not Set</p>
+                            </div>
+                            <div class="pt-4 border-t border-white/10">
+                                <button onclick="sendPaymentAlert()" class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition-all flex justify-center items-center gap-2 text-sm">
+                                    <span class="material-symbols-outlined text-[18px]">notifications_active</span> Send Payment Alert
+                                </button>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[120px] text-white/5 pointer-events-none">payments</span>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-8">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="material-symbols-outlined text-red-500 text-2xl">block</span>
+                            <h3 class="font-black text-lg text-slate-800">Access Control</h3>
+                        </div>
+                        <p class="text-xs font-bold text-slate-500 mb-6 leading-relaxed">If payment is delayed, you can disable their login access to the software.</p>
+                        
+                        <div class="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div>
+                                <p class="font-bold text-slate-800 text-sm">Disable Account</p>
+                                <p class="text-[10px] font-bold text-slate-500 mt-0.5">Locks workspace immediately.</p>
+                            </div>
+                            <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" id="disableToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-slate-300 appearance-none cursor-pointer transition-all duration-300 z-10"/>
+                                <label for="disableToggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer transition-colors duration-300"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50 rounded-[2rem] border border-red-100 shadow-sm p-8">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-red-600 text-xl">warning</span>
+                            <h3 class="font-black text-red-700 text-lg">Danger Zone</h3>
+                        </div>
+                        <p class="text-xs font-bold text-red-500/80 mb-6 leading-relaxed">Ejecting will permanently disconnect them from ClinicOS. Used for migrations or terminations.</p>
+                        
+                        <button onclick="ejectClinic()" class="w-full bg-white border-2 border-red-200 text-red-600 hover:bg-red-600 hover:text-white font-black py-3.5 rounded-xl shadow-sm transition-all flex justify-center items-center gap-2 text-sm uppercase tracking-wider">
+                            <span class="material-symbols-outlined text-[18px]">eject</span> Eject Workspace
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="editModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity">
+        <div class="bg-white rounded-[2rem] p-8 w-full max-w-2xl shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button type="button" onclick="closeEditModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition-colors"><span class="material-symbols-outlined">close</span></button>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-brand-500 text-3xl">edit_document</span>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Edit Workspace Details</h2>
+            </div>
+            
+            <form id="editDetailsForm" class="space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Clinic Name</label>
+                        <input type="text" id="editName" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-slate-800" required>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Owner Name</label>
+                        <input type="text" id="editOwner" placeholder="e.g. Dr. Gowtham" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-800">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Contact Number</label>
+                        <input type="text" id="editPhone" placeholder="e.g. 9876543210" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-800">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Physical Address</label>
+                        <input type="text" id="editAddress" placeholder="Clinic Address..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-800">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Billing Cycle (Start Date)</label>
+                        <input type="date" id="editBillStart" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-800">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Billing Cycle (End Date)</label>
+                        <input type="date" id="editBillEnd" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-800">
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-100">
+                    <button type="submit" id="btnSaveDetails" class="w-full bg-slate-900 text-white font-black py-4 rounded-xl shadow-lg hover:bg-black transition-all flex justify-center items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">save</span> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyBBk6vekMZZNQnwyT2IbgIypv4dKN2NFpA", authDomain: "clinic-os-d280b.firebaseapp.com", projectId: "clinic-os-d280b" };
+        firebase.initializeApp(firebaseConfig); 
+        const auth = firebase.auth(); const db = firebase.firestore();
+
+        // Get Clinic ID from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentClinicId = urlParams.get('id');
+
+        // Date formatter from YYYY-MM-DD to DD/MM/YYYY
+        function formatToDDMMYYYY(dateString) {
+            if (!dateString) return 'Not Set';
+            const parts = dateString.split('-');
+            if(parts.length !== 3) return dateString;
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        // Security Check
+        auth.onAuthStateChanged(async (user) => { 
+            if (!user) { 
+                window.location.href = "hq_login.html"; 
+            } else { 
+                try {
+                    const userDoc = await db.collection("users").doc(user.uid).get();
+                    if (userDoc.exists && userDoc.data().role === 'super_admin') {
+                        document.body.style.display = "flex"; 
+                        if(currentClinicId) {
+                            fetchClinicDetails();
+                        } else {
+                            alert("No clinic selected!"); 
+                            window.location.href="superadmin_hq.html";
+                        }
+                    } else {
+                        await auth.signOut(); 
+                        window.location.href = "hq_login.html";
+                    }
+                } catch(e) { 
+                    window.location.href = "hq_login.html"; 
+                }
+            }
+        });
+
+        function fetchClinicDetails() {
+            db.collection("branches").doc(currentClinicId).onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    
+                    // Bind Text Data
+                    document.getElementById('headerClinicName').innerText = data.name || 'Unknown Clinic';
+                    document.getElementById('headerClinicId').innerText = `ID: ${doc.id}`;
+                    document.getElementById('detName').innerText = data.name || '-';
+                    document.getElementById('detEmail').innerText = data.adminEmail || 'No Email';
+                    document.getElementById('detSpecialty').innerText = data.specialty || 'General';
+                    document.getElementById('detPlan').innerText = data.plan ? data.plan + " Plan" : 'Lite Plan';
+                    
+                    // Optional Details
+                    document.getElementById('detPhone').innerText = data.phone || 'Not provided yet';
+                    document.getElementById('detAddress').innerText = data.address || 'Not provided yet';
+                    document.getElementById('detOwner').innerText = data.ownerName || 'Not provided yet';
+
+                    // Bind Billing Dates (DD/MM/YYYY to DD/MM/YYYY)
+                    const bStart = formatToDDMMYYYY(data.billStart);
+                    const bEnd = formatToDDMMYYYY(data.billEnd);
+                    if(data.billStart && data.billEnd) {
+                        document.getElementById('detBillingDate').innerText = `${bStart} to ${bEnd}`;
+                    } else {
+                        document.getElementById('detBillingDate').innerText = 'Dates not configured';
+                    }
+
+                    // Bind Status
+                    const isBlocked = data.status === 'blocked';
+                    document.getElementById('disableToggle').checked = isBlocked;
+                    updateStatusBadge(isBlocked);
+
+                } else {
+                    alert("Workspace not found or deleted!");
+                    window.location.href = "superadmin_hq.html";
+                }
+            });
+        }
+
+        // ---- EDIT MODAL LOGIC ----
+        window.openEditModal = async () => {
+            try {
+                const doc = await db.collection("branches").doc(currentClinicId).get();
+                if(doc.exists) {
+                    const d = doc.data();
+                    document.getElementById('editName').value = d.name || '';
+                    document.getElementById('editOwner').value = d.ownerName || '';
+                    document.getElementById('editPhone').value = d.phone || '';
+                    document.getElementById('editAddress').value = d.address || '';
+                    document.getElementById('editBillStart').value = d.billStart || '';
+                    document.getElementById('editBillEnd').value = d.billEnd || '';
+                    document.getElementById('editModal').classList.remove('hidden');
+                }
+            } catch(e) {
+                alert("Error loading details");
+            }
+        };
+
+        window.closeEditModal = () => document.getElementById('editModal').classList.add('hidden');
+
+        document.getElementById('editDetailsForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSaveDetails');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Saving...`; 
+            btn.disabled = true;
+
+            try {
+                await db.collection("branches").doc(currentClinicId).update({
+                    name: document.getElementById('editName').value,
+                    ownerName: document.getElementById('editOwner').value,
+                    phone: document.getElementById('editPhone').value,
+                    address: document.getElementById('editAddress').value,
+                    billStart: document.getElementById('editBillStart').value,
+                    billEnd: document.getElementById('editBillEnd').value,
+                });
+                closeEditModal();
+            } catch(error) {
+                console.error(error);
+                alert("Failed to save changes.");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+        // --------------------------
+
+        function updateStatusBadge(isBlocked) {
+            const badge = document.getElementById('statusBadge');
+            if(isBlocked) {
+                badge.className = "bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-sm";
+                badge.innerHTML = `<span class="material-symbols-outlined text-[14px]">block</span> DISABLED`;
+            } else {
+                badge.className = "bg-emerald-100 text-emerald-600 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-sm";
+                badge.innerHTML = `<span class="material-symbols-outlined text-[14px]">check_circle</span> ACTIVE`;
+            }
+        }
+
+        // Toggle Account Access
+        document.getElementById('disableToggle').addEventListener('change', async (e) => {
+            const isBlocked = e.target.checked;
+            if(confirm(`Are you sure you want to ${isBlocked ? 'DISABLE' : 'ENABLE'} this clinic's access?`)) {
+                try {
+                    await db.collection("branches").doc(currentClinicId).update({
+                        status: isBlocked ? 'blocked' : 'Active'
+                    });
+                } catch(err) {
+                    console.error(err); alert("Failed to update status.");
+                    e.target.checked = !isBlocked; // Revert switch
+                }
+            } else {
+                e.target.checked = !isBlocked; // Revert switch if canceled
+            }
+        });
+
+        function sendPaymentAlert() {
+            alert("Payment alert notification sent to " + document.getElementById('detEmail').innerText + "!");
+        }
+
+        async function ejectClinic() {
+            const confirmName = prompt(`DANGER: Type "${currentClinicId}" to permanently EJECT and delete this workspace.`);
+            if(confirmName === currentClinicId) {
+                try {
+                    await db.collection("branches").doc(currentClinicId).delete();
+                    alert("Workspace ejected successfully.");
+                    window.location.href = "superadmin_hq.html";
+                } catch(e) {
+                    console.error(e); alert("Failed to eject workspace.");
+                }
+            } else if (confirmName !== null) {
+                alert("Incorrect ID. Eject cancelled.");
+            }
+        }
+    </script>
+</body>
+</html>

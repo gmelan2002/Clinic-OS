@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Patients | ClinicOS</title>
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/fluency-systems-filled/48/228BE6/hospital-2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a', 950: '#172554' }, surface: '#f8fafc' }, fontFamily: { 'body': ['Manrope', 'sans-serif'] } } } }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-surface font-body text-slate-800 flex h-screen w-screen overflow-hidden selection:bg-brand-500 selection:text-white" style="display: none;">
+
+    <aside class="w-[280px] min-w-[280px] bg-brand-950 text-white flex flex-col hidden lg:flex shrink-0 shadow-2xl relative z-30 transition-all duration-300">
+        <div class="h-20 flex items-center gap-4 px-8 border-b border-white/5 shrink-0 cursor-pointer" onclick="window.location.href='clinicos_dashboard.html'">
+            <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center border border-white/10 shadow-inner">
+                <span class="material-symbols-outlined text-brand-400 text-[24px]">health_and_safety</span>
+            </div>
+            <div class="flex flex-col justify-center">
+                <h1 class="text-2xl font-extrabold tracking-tight leading-none">Clinic<span class="text-brand-400">OS</span></h1>
+                <p class="text-[10px] font-bold text-amber-400 uppercase tracking-[0.1em] mt-1 flex items-center gap-1" id="sidebarSpecialty">Loading Plan...</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 py-8 px-5 space-y-1.5 overflow-y-auto no-scrollbar">
+            <p class="text-[11px] font-extrabold text-brand-100/40 uppercase tracking-[0.15em] mb-3 px-3">Main Menu</p>
+            
+            <a href="clinicos_dashboard.html" class="flex items-center gap-3.5 px-4 py-3.5 text-brand-100/70 hover:bg-white/5 hover:text-white rounded-2xl font-bold transition-colors">
+                <span class="material-symbols-outlined text-[20px]">space_dashboard</span> <span class="text-sm">Workspace</span>
+            </a>
+            
+            <a href="patients.html" class="flex items-center gap-3.5 px-4 py-3.5 bg-brand-600 text-white rounded-2xl font-bold shadow-lg shadow-brand-900/50 mb-6 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">group</span> <span class="text-sm">Patients Directory</span>
+            </a>
+            
+            <a href="calendar.html" class="flex items-center gap-3.5 px-4 py-3.5 text-brand-100/70 hover:bg-white/5 hover:text-white rounded-2xl font-bold transition-colors">
+                <span class="material-symbols-outlined text-[20px]">calendar_month</span> <span class="text-sm">Appointments</span>
+            </a>
+            
+            <div id="navGroupPlus" style="display: none;">
+                <p class="text-[11px] font-extrabold text-brand-100/40 uppercase tracking-[0.15em] mt-8 mb-3 px-3">Clinical Records</p>
+                <a href="treatments.html" class="flex items-center gap-3.5 px-4 py-3.5 text-brand-100/70 hover:bg-white/5 hover:text-white rounded-2xl font-bold transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">medical_information</span> <span class="text-sm">Treatments</span>
+                </a>
+                <a href="lab_orders.html" class="flex items-center gap-3.5 px-4 py-3.5 text-brand-100/70 hover:bg-white/5 hover:text-white rounded-2xl font-bold transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">biotech</span> <span class="text-sm">Lab Orders</span>
+                </a>
+            </div>
+
+            <div id="navGroupPro" style="display: none;">
+                <p class="text-[11px] font-extrabold text-brand-100/40 uppercase tracking-[0.15em] mt-8 mb-3 px-3">Operations</p>
+                <a href="billing.html" class="flex items-center gap-3.5 px-4 py-3.5 text-brand-100/70 hover:bg-white/5 hover:text-white rounded-2xl font-bold transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">payments</span> <span class="text-sm">Billing & Finance</span>
+                </a>
+                <a href="inventory.html" class="flex items-center gap-3.5 px-4 py-3.5 text-brand-100/70 hover:bg-white/5 hover:text-white rounded-2xl font-bold transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">medication</span> <span class="text-sm">Pharmacy & Stock</span>
+                </a>
+            </div>
+
+            <p class="text-[11px] font-extrabold text-brand-100/40 uppercase tracking-[0.15em] mt-8 mb-3 px-3">Administration</p>
+            <a href="settings.html" class="flex items-center gap-3.5 px-4 py-3.5 text-brand-100/70 hover:bg-white/5 hover:text-white rounded-2xl font-bold transition-colors">
+                <span class="material-symbols-outlined text-[20px]">settings</span> <span class="text-sm">Clinic Settings</span>
+            </a>
+        </nav>
+
+        <div class="p-5 border-t border-white/5 shrink-0">
+            <button id="logoutBtn" class="flex items-center gap-3.5 px-4 py-3.5 text-red-400 hover:bg-red-500/10 w-full rounded-2xl font-bold transition-colors">
+                <span class="material-symbols-outlined text-[20px]">logout</span> <span class="text-sm">Sign Out</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-surface">
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-6 lg:px-10 sticky top-0 z-20 shadow-sm shrink-0">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden p-2 text-slate-500 hover:bg-slate-50 rounded-lg"><span class="material-symbols-outlined">menu</span></button>
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-extrabold text-brand-500 uppercase tracking-widest mb-1 pl-1 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">domain</span> Active Workspace</span>
+                    <div class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-sm font-extrabold text-slate-700 shadow-inner inline-block" id="activeWorkspaceDisplay">Loading...</div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4 lg:gap-8">
+                <div class="relative w-48 lg:w-72 hidden md:block">
+                    <span class="material-symbols-outlined absolute left-4 top-2.5 text-slate-400 text-[20px]">search</span>
+                    <input type="text" id="searchInput" placeholder="Search patients..." class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-full outline-none focus:bg-white focus:border-brand-500 font-bold text-sm transition-all">
+                </div>
+                <button class="relative p-2 text-slate-400 hover:bg-slate-50 hover:text-brand-600 rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-[24px]">notifications</span>
+                </button>
+                <div class="flex items-center gap-3 pl-4 lg:pl-6 border-l border-slate-200 cursor-pointer group">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-extrabold text-slate-800 group-hover:text-brand-600 transition-colors" id="headerDoctorName">Doctor</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5" id="headerRole">Loading...</p>
+                    </div>
+                    <div class="w-10 h-10 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center font-extrabold border-2 border-brand-200 shadow-sm" id="headerAvatar">DR</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 md:p-10 fade-in flex flex-col">
+            <div class="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-6">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-slate-800 tracking-tight leading-tight">Patient Directory</h2>
+                    <p class="text-sm font-bold text-slate-500 mt-1">Manage profiles, medical history, and records.</p>
+                </div>
+                <button onclick="openModal()" class="bg-brand-900 hover:bg-brand-950 text-white px-6 py-3 rounded-2xl font-extrabold text-sm flex items-center gap-2 shadow-lg transition-all hover:-translate-y-0.5" id="themeAddBtn">
+                    <span class="material-symbols-outlined text-[20px]">person_add</span> Register Patient
+                </button>
+            </div>
+
+            <div class="flex-1 bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/80 shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600" id="themeListIconBg"><span class="material-symbols-outlined text-[18px]" id="themeListIcon">group</span></div>
+                        <h3 class="font-extrabold text-lg text-slate-800">All Registered Patients</h3>
+                    </div>
+                    <span class="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider" id="totalBadge">0 Total</span>
+                </div>
+                
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-white sticky top-0 z-10">
+                            <tr>
+                                <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Patient ID & Name</th>
+                                <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Contact & Info</th>
+                                <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Location</th>
+                                <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">Status</th>
+                                <th class="p-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientsContainer" class="divide-y divide-slate-50">
+                            <tr><td colspan="5" class="p-10 text-center text-slate-400 font-bold italic">Loading records...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="addPatientModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-opacity">
+        <div class="bg-white rounded-[2.5rem] p-8 w-full max-w-lg shadow-2xl relative">
+            <button type="button" onclick="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-700 p-1 bg-slate-100 rounded-full"><span class="material-symbols-outlined">close</span></button>
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center" id="themeModalIconBg"><span class="material-symbols-outlined text-[24px]">person_add</span></div>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight" id="modalTitle">Register Patient</h2>
+            </div>
+            <p class="text-xs font-bold text-slate-500 mb-8">Add a new record to your clinic database.</p>
+            
+            <form id="patientForm" class="space-y-5">
+                <input type="hidden" id="pId">
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Full Name</label>
+                    <input type="text" id="pName" placeholder="e.g. John Doe" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-slate-800 transition-all" required>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Phone Number</label>
+                        <input type="tel" id="pPhone" placeholder="1234567890" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-slate-800 transition-all" required>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Age</label>
+                        <input type="number" id="pAge" placeholder="Years" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-slate-800 transition-all" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Location / Address</label>
+                    <input type="text" id="pAddress" placeholder="City or Area" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-brand-500 font-extrabold text-slate-800 transition-all" required>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <button type="submit" id="btnSavePatient" class="w-full bg-brand-900 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-brand-950 transition-all flex justify-center items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">save</span> Save Record
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyBBk6vekMZZNQnwyT2IbgIypv4dKN2NFpA", authDomain: "clinic-os-d280b.firebaseapp.com", projectId: "clinic-os-d280b", storageBucket: "clinic-os-d280b.firebasestorage.app", messagingSenderId: "149668024566", appId: "1:149668024566:web:bb425ca2c455a80d69dcd7" };
+        firebase.initializeApp(firebaseConfig); const auth = firebase.auth(); const db = firebase.firestore();
+
+        let currentTenantId = localStorage.getItem('tenantId');
+        let allPatients = [];
+
+        auth.onAuthStateChanged((user) => { 
+            // Uncomment the lines below for actual auth enforcement in production
+            // if (!user || !currentTenantId) { window.location.href = "login.html"; } else {
+                document.body.style.display = "flex"; 
+                if(!currentTenantId) currentTenantId = 'salem'; 
+                initClinicOS(); 
+            // }
+        });
+
+        async function initClinicOS() {
+            try {
+                const branchDoc = await db.collection("branches").doc(currentTenantId).get();
+                let clinicName = "New Clinic Workspace", specialty = "general", plan = "lite";
+                if (branchDoc.exists) { 
+                    clinicName = branchDoc.data().name || clinicName; 
+                    specialty = branchDoc.data().specialty || specialty; 
+                    plan = branchDoc.data().plan || plan;
+                }
+                document.getElementById('activeWorkspaceDisplay').innerText = clinicName.toUpperCase();
+                
+                applyPlanGating(plan);
+                applySpecialtyTheme(specialty); 
+                fetchPatients();
+            } catch (error) { console.error(error); }
+        }
+
+        // TIER GATING FUNCTION
+        function applyPlanGating(plan) {
+            document.getElementById('sidebarSpecialty').innerHTML = `<span class="material-symbols-outlined text-[12px]">workspace_premium</span> ${plan} TIER`;
+            
+            if (plan === 'lite') {
+                document.getElementById('navGroupPlus').style.display = 'none';
+                document.getElementById('navGroupPro').style.display = 'none';
+            } 
+            else if (plan === 'plus') {
+                document.getElementById('navGroupPlus').style.display = 'block';
+                document.getElementById('navGroupPro').style.display = 'none';
+            } 
+            else if (plan === 'pro') {
+                document.getElementById('navGroupPlus').style.display = 'block';
+                document.getElementById('navGroupPro').style.display = 'block';
+            }
+        }
+
+        function fetchPatients() {
+            db.collection("patients").where("branchId", "==", currentTenantId).orderBy("timestamp", "desc").onSnapshot(snap => {
+                allPatients = []; snap.forEach(doc => allPatients.push({ id: doc.id, ...doc.data() }));
+                renderTable(allPatients);
+            });
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('patientsContainer');
+            document.getElementById('totalBadge').innerText = `${data.length} Total`;
+            tbody.innerHTML = '';
+            if (data.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-slate-400 font-bold italic">No patients found. Add one to get started.</td></tr>`; return; }
+
+            data.forEach(p => {
+                tbody.innerHTML += `
+                <tr class="hover:bg-slate-50 transition-colors group">
+                    <td class="p-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center font-black text-slate-500">${p.name.substring(0,2).toUpperCase()}</div>
+                            <div><h4 class="font-extrabold text-slate-800 text-sm">${p.name}</h4><p class="font-mono text-[9px] font-bold text-slate-400 uppercase mt-0.5">${p.id.substring(0,8)}</p></div>
+                        </div>
+                    </td>
+                    <td class="p-4"><p class="text-xs font-bold text-slate-600 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">call</span> ${p.phone}</p><p class="text-[10px] font-bold text-slate-400 mt-1">${p.age} Years Old</p></td>
+                    <td class="p-4 font-bold text-slate-600 text-xs">${p.address || 'N/A'}</td>
+                    <td class="p-4"><span class="bg-green-50 text-green-600 border border-green-100 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-wider">${p.status || 'Active'}</span></td>
+                    <td class="p-4 text-right">
+                        <button onclick="editPatient('${p.id}', '${p.name}', '${p.phone}', '${p.age}', '${p.address}')" class="text-slate-400 hover:text-brand-600 transition-colors p-2"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const t = e.target.value.toLowerCase();
+            renderTable(allPatients.filter(p => p.name.toLowerCase().includes(t) || p.phone.includes(t)));
+        });
+
+        document.getElementById('patientForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('pId').value;
+            const data = { branchId: currentTenantId, name: document.getElementById('pName').value, phone: document.getElementById('pPhone').value, age: document.getElementById('pAge').value, address: document.getElementById('pAddress').value, status: 'Active', timestamp: firebase.firestore.FieldValue.serverTimestamp() };
+            try {
+                if(id) await db.collection("patients").doc(id).update(data);
+                else await db.collection("patients").add(data);
+                closeModal(); document.getElementById('patientForm').reset();
+            } catch (err) { alert("Error saving"); console.error(err); }
+        };
+
+        window.editPatient = (id, n, p, a, ad) => {
+            document.getElementById('pId').value = id; document.getElementById('pName').value = n; document.getElementById('pPhone').value = p; document.getElementById('pAge').value = a; document.getElementById('pAddress').value = ad;
+            document.getElementById('modalTitle').innerText = 'Edit Patient'; openModal();
+        };
+
+        function openModal() { document.getElementById('addPatientModal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('addPatientModal').classList.add('hidden'); document.getElementById('patientForm').reset(); document.getElementById('modalTitle').innerText = 'Register Patient'; }
+
+        const hexThemes = { blue: { hex: '#2563eb', bg: '#eff6ff', dark: '#1e3a8a' }, teal: { hex: '#0d9488', bg: '#f0fdfa', dark: '#0f766e' }, emerald: { hex: '#059669', bg: '#ecfdf5', dark: '#047857' }, purple: { hex: '#7c3aed', bg: '#faf5ff', dark: '#5b21b6' }, orange: { hex: '#ea580c', bg: '#fff7ed', dark: '#c2410c' }, pink: { hex: '#db2777', bg: '#fdf2f8', dark: '#be185d' }, amber: { hex: '#d97706', bg: '#fffbeb', dark: '#b45309' }, stone: { hex: '#57534e', bg: '#f5f5f4', dark: '#44403c' }, lime: { hex: '#65a30d', bg: '#f7fee7', dark: '#4d7c0f' }, rose: { hex: '#e11d48', bg: '#fff1f2', dark: '#be123c' } };
+        const clinicConfig = { general: { themeColor: 'blue', role: 'General Physician' }, dental: { themeColor: 'teal', role: 'Chief Dentist' }, eye: { themeColor: 'emerald', role: 'Ophthalmologist' }, skin: { themeColor: 'purple', role: 'Dermatologist' }, ortho: { themeColor: 'orange', role: 'Orthopedic Surgeon' }, maternity: { themeColor: 'pink', role: 'Gynecologist' }, pediatric: { themeColor: 'amber', role: 'Pediatrician' }, veterinary: { themeColor: 'stone', role: 'Chief Veterinarian' }, ayurveda: { themeColor: 'lime', role: 'Ayurvedic Healer' }, cancer: { themeColor: 'rose', role: 'Chief Oncologist' } };
+
+        function applySpecialtyTheme(specialtyKey) {
+            const config = clinicConfig[specialtyKey] || clinicConfig['general']; 
+            const theme = hexThemes[config.themeColor];
+            
+            document.getElementById('headerRole').innerText = config.role; 
+
+            document.getElementById('themeAddBtn').style.backgroundColor = theme.dark; 
+            document.getElementById('btnSavePatient').style.backgroundColor = theme.dark;
+            document.getElementById('themeListIconBg').style.backgroundColor = theme.bg; 
+            document.getElementById('themeListIcon').style.color = theme.hex;
+            document.getElementById('themeModalIconBg').style.backgroundColor = theme.bg; 
+            document.getElementById('themeModalIconBg').style.color = theme.hex;
+        }
+
+        document.getElementById('logoutBtn').onclick = () => {
+            // 1. Browser memory-ai clear pandrom
+            localStorage.removeItem('tenantId');
+            localStorage.removeItem('clinicPlan');
+
+            // 2. Firebase-la irundhu sign out pandrom
+            auth.signOut().then(() => {
+                window.location.href = "login.html"; // Login page-kku anuprom
+            });
+        };
+    </script>
+</body>
+</html>

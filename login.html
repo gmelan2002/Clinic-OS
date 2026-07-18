@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Login | ClinicOS - Modern Clinic Management</title>
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/fluency-systems-filled/48/228BE6/hospital-2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a', 950: '#172554' },
+                        accent: { 500: '#0d9488', 600: '#0f766e' },
+                        surface: '#f8fafc'
+                    },
+                    fontFamily: { 'body': ['Manrope', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .bg-pattern { background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 24px 24px; }
+    </style>
+</head>
+<body class="bg-surface font-body text-slate-800 min-h-screen flex selection:bg-brand-500 selection:text-white">
+
+    <div class="hidden lg:flex w-5/12 bg-brand-900 relative overflow-hidden flex-col justify-between p-12">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-brand-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+            <div class="absolute top-1/4 -right-24 w-96 h-96 bg-accent-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+        </div>
+        <div class="relative z-10 flex items-center gap-3">
+            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-xl">
+                <span class="material-symbols-outlined text-brand-600 text-3xl">health_and_safety</span>
+            </div>
+            <div>
+                <h1 class="text-3xl font-black text-white tracking-tight leading-none">Clinic<span class="text-brand-500">OS</span></h1>
+                <p class="text-[10px] font-bold tracking-widest text-brand-100 uppercase opacity-80 mt-0.5">By Gowtham WebWorks</p>
+            </div>
+        </div>
+        <div class="relative z-10 mt-10">
+            <h2 class="text-5xl font-black text-white leading-[1.1] mb-6">
+                The Operating System for <span class="text-accent-500">Modern Clinics.</span>
+            </h2>
+            <p class="text-brand-100 text-lg font-medium leading-relaxed max-w-md opacity-90">
+                Manage patients, automate leads, track treatments, and scale your clinical network seamlessly with our highly secured architecture.
+            </p>
+            <div class="mt-12 space-y-5">
+                <div class="flex items-center gap-4 text-white">
+                    <div class="w-10 h-10 rounded-full bg-brand-800 flex items-center justify-center border border-brand-600"><span class="material-symbols-outlined text-xl text-accent-500">lock</span></div>
+                    <span class="font-bold text-sm">HIPAA Compliant & Highly Secured</span>
+                </div>
+                <div class="flex items-center gap-4 text-white">
+                    <div class="w-10 h-10 rounded-full bg-brand-800 flex items-center justify-center border border-brand-600"><span class="material-symbols-outlined text-xl text-accent-500">hub</span></div>
+                    <span class="font-bold text-sm">Multi-Branch Global Sync</span>
+                </div>
+            </div>
+        </div>
+        <div class="relative z-10">
+            <p class="text-xs text-brand-100 font-bold opacity-60">© 2026 ClinicOS Systems. All rights reserved.</p>
+        </div>
+    </div>
+
+    <div class="w-full lg:w-7/12 flex items-center justify-center relative bg-surface bg-pattern">
+        <div class="w-full max-w-md p-8 sm:p-10 glass-panel rounded-[2.5rem] shadow-2xl border border-white mx-4 mt-16 lg:mt-0 relative">
+            
+            <div id="errorBanner" class="hidden absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-200 text-red-600 px-4 py-2 rounded-xl text-xs font-bold shadow-md whitespace-nowrap z-20 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px]">error</span> <span id="errorText">Invalid Credentials</span>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-black text-slate-800 mb-2">Welcome Back</h2>
+                <p class="text-sm font-bold text-slate-500">Enter your credentials to access your workspace.</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider mb-2">Workspace ID (Clinic Code)</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-4 top-3.5 text-slate-400 text-[20px]">domain</span>
+                        <input type="text" id="clinicId" placeholder="e.g. salem" class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-700 transition-all" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-4 top-3.5 text-slate-400 text-[20px]">mail</span>
+                        <input type="email" id="email" placeholder="doctor@clinicos.com" class="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-700 transition-all" required>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-[11px] font-black text-slate-400 uppercase tracking-wider">Password</label>
+                    </div>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-4 top-3.5 text-slate-400 text-[20px]">key</span>
+                        <input type="password" id="password" placeholder="••••••••" class="w-full pl-12 pr-12 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-brand-500 font-bold text-slate-700 transition-all" required>
+                    </div>
+                </div>
+                
+                <button type="submit" id="submitBtn" class="w-full bg-brand-900 hover:bg-brand-950 text-white font-black py-4 rounded-2xl shadow-lg hover:-translate-y-0.5 transition-all duration-300 mt-4 flex items-center justify-center gap-2">
+                    Access Console <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+            </form>
+            
+            <p class="text-center text-[10px] font-bold text-slate-400 mt-8 cursor-pointer hover:text-brand-500 transition-colors" onclick="window.location.href='hq_login.html'">
+                Are you a Super Admin? Access HQ Console here.
+            </p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBk6vekMZZNQnwyT2IbgIypv4dKN2NFpA",
+            authDomain: "clinic-os-d280b.firebaseapp.com",
+            projectId: "clinic-os-d280b"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Safe Auto-Redirect Logic
+        auth.onAuthStateChanged((user) => {
+            const savedTenant = localStorage.getItem('tenantId');
+            if (user && savedTenant && savedTenant !== 'undefined' && savedTenant !== 'null') {
+                window.location.href = 'clinicos_dashboard.html';
+            }
+        });
+
+        document.getElementById('loginForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const errorBanner = document.getElementById('errorBanner');
+            const errorText = document.getElementById('errorText');
+            const originalText = btn.innerHTML;
+            
+            const clinicId = document.getElementById('clinicId').value.toLowerCase().trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            errorBanner.classList.add('hidden');
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin text-[18px]">sync</span> Authenticating...`;
+            btn.disabled = true;
+            
+            try {
+                const branchDoc = await db.collection("branches").doc(clinicId).get();
+                if (!branchDoc.exists) throw new Error("Invalid Workspace ID.");
+
+                const clinicData = branchDoc.data();
+                localStorage.setItem('clinicPlan', clinicData.plan || 'lite');
+
+                await auth.signInWithEmailAndPassword(email, password);
+                
+                localStorage.setItem('tenantId', clinicId); 
+                window.location.href = 'clinicos_dashboard.html';
+
+            } catch (error) {
+                console.error(error);
+                errorText.innerText = error.message.includes('auth') ? "Invalid email or password." : error.message;
+                errorBanner.classList.remove('hidden');
+                errorBanner.classList.add('animate-bounce');
+                setTimeout(() => errorBanner.classList.remove('animate-bounce'), 1000);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
