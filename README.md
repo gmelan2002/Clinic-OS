@@ -4,14 +4,14 @@ ClinicOS is a web-based, multi-tenant clinic management platform designed for he
 
 Key Features
 
-- Multi-Tenant Workspace Isolation: Separates clinic data (`patients`, `appointments`, `treatments`, `lab_orders`, `billings`, `inventory`, `expenses`, `users`) by tenant/branch ID using Cloud Firestore.
-- Super Admin HQ Console: Create clinic workspaces, provision clinic admin logins, upgrade plans, view workspace details, toggle account access, or eject clinics.
-- Tier-Based Feature Gating (`lite`, `plus`, `pro`): Gates navigation groups, clinical tools, lab orders, billing, inventory, and dashboard analytics based on the branch's active plan.
-- Specialty Theming & Workflows: Adapts UI accent colors, roles, labels, and quick clinical tools across specialties (such as General, Dental, Eye Care, Skin, Ortho, Maternity, Pediatric, Veterinary, Ayurveda, and Oncology).
-- Patient & Appointment Management: Register and search patients, manage daily schedules, and update appointment statuses (`Pending`, `Arrived`, `Completed`, `Cancelled`).
-- Clinical Records & 1-Click PDFs: Log diagnoses, treatments, and prescriptions, and export A5 PDF prescriptions and invoices using `html2pdf.js`.
-- Inventory & Auto-Expense Sync: Track stock levels, low-stock alerts, and pagination, while automatically recording usage costs to `expenses` when stock decreases.
-- Staff & Profile Management: Update clinic contact/address details and create staff accounts (`Doctor`, `Receptionist / Front Desk`, `Nurse`, `Admin`).
+- **Multi-Tenant Workspace Isolation:** Separates clinic data (`patients`, `appointments`, `treatments`, `lab_orders`, `billings`, `inventory`, `expenses`, `users`) by tenant/branch ID using Cloud Firestore.
+- **Super Admin HQ Console:** Create clinic workspaces, provision clinic admin logins, upgrade plans, view workspace details, toggle account access, or eject clinics.
+- **Tier-Based Feature Gating (`lite`, `plus`, `pro`):** Gates navigation groups, clinical tools, lab orders, billing, inventory, and dashboard analytics based on the branch's active plan.
+- **Specialty Theming & Workflows:** Adapts UI accent colors, roles, labels, and quick clinical tools across specialties (such as General, Dental, Eye Care, Skin, Ortho, Maternity, Pediatric, Veterinary, Ayurveda, and Oncology).
+- **Patient & Appointment Management:** Register and search patients, manage daily schedules, and update appointment statuses (`Pending`, `Arrived`, `Completed`, `Cancelled`).
+- **Clinical Records & 1-Click PDFs:** Log diagnoses, treatments, and prescriptions, and export A5 PDF prescriptions and invoices using `html2pdf.js`.
+- **Inventory & Auto-Expense Sync:** Track stock levels, low-stock alerts, and pagination, while automatically recording usage costs to `expenses` when stock decreases.
+- **Staff & Profile Management:** Update clinic contact/address details and create staff accounts (`Doctor`, `Receptionist / Front Desk`, `Nurse`, `Admin`).
 
 Project Structure
 
